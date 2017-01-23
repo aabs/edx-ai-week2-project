@@ -1,7 +1,7 @@
 import sys
 
-class State():
-    """An implementation of some key search algorithms. For edX AI week 2"""
+class BoardLayout():
+    """a class representing an instance of a configuration of the board"""
         
     def parseLayoutToVector(self, layout):
         """convert a comma separated list of chars into a vector"""
@@ -25,33 +25,33 @@ class StateRenderer():
     def __init__(self):
         """open a file and start writing the output to it"""
 
-def dispatchCommand(command, state):
-    print ("dispatching ", command, " with ", state.asString())
+def dispatchCommand(command, boardLayout):
+    print ("dispatching ", command, " with ", boardLayout.asString())
     if command == "bfs":
-        doBfs(state)
+        doBfs(boardLayout)
     elif command == "dfs":
-        doDfs(state)
+        doDfs(boardLayout)
     elif command == "ast":
-        doAst(state)
+        doAst(boardLayout)
     elif command == "ida":
-        doIda(state)
+        doIda(boardLayout)
     else:
         displayUsage(command)
         
         
-def doBfs(state):
+def doBfs(boardLayout):
     """comment"""
     print("doBfs")
 
-def doDfs(state):
+def doDfs(boardLayout):
     """comment"""
     print("doDfs")
 
-def doAst(state):
+def doAst(boardLayout):
     """comment"""
     print("doAst")
 
-def doIda(state):
+def doIda(boardLayout):
     """comment"""
     print("doIda")
 
@@ -62,5 +62,5 @@ def displayUsage(command):
 def displayState(blah):
     print (blah.asString())
 
-startState = State(sys.argv[2])
-dispatchCommand(sys.argv[1],startState)
+startingBoardLayout = BoardLayout(sys.argv[2])
+dispatchCommand(sys.argv[1],startingBoardLayout)
