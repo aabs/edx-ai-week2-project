@@ -1,29 +1,6 @@
 import sys
 
-class BoardLayout():
-    """a class representing an instance of a configuration of the board"""
-        
-    def parseLayoutToVector(self, layout):
-        """convert a comma separated list of chars into a vector"""
-        listOfStrings = layout.split(",")
-        result =[]
-        for s in listOfStrings:
-            result.append(int(s))
-            # TODO: write code...
-        return result
-    
-    def asString(self):
-        return ", ".join('%d'%x for x in self.state)
-        
-    def __init__(self, layout):
-        """initialise from a comma separated list of characters"""
-        self.state = self.parseLayoutToVector(layout)
 
-class StateRenderer():
-    """render the current state in some way"""
-
-    def __init__(self):
-        """open a file and start writing the output to it"""
 
 def dispatchCommand(command, boardLayout):
     print ("dispatching ", command, " with ", boardLayout.asString())
@@ -38,6 +15,7 @@ def dispatchCommand(command, boardLayout):
     else:
         displayUsage(command)
         
+
         
 def doBfs(boardLayout):
     """comment"""
@@ -62,5 +40,72 @@ def displayUsage(command):
 def displayState(blah):
     print (blah.asString())
 
-startingBoardLayout = BoardLayout(sys.argv[2])
-dispatchCommand(sys.argv[1],startingBoardLayout)
+
+
+class RuntimeState():
+    """This class is responsible for keeping track of the various aspects of runtime performance"""
+    
+    def __init__(self):
+        """initialise with default characters"""
+        self.path_to_goal = []
+        self.cost_of_path = 0
+        self.nodes_expanded = 0
+        self.fringe_size = 0
+        self.max_fringe_size = 0
+        self.search_depth = 0
+        self.max_search_depth = 0
+        self.running_time = 0.0
+        self.max_ram_usage = 0.0
+        
+    def asString(self):
+        return """
+path_to_goal: %s
+cost_of_path: %d
+nodes_expanded: %d
+fringe_size: %d
+max_fringe_size: %d
+search_depth: %d
+max_search_depth: %d
+running_time: %.8f
+max_ram_usage: %.8f"""%(
+            self.path_to_goal,
+            self.cost_of_path,
+            self.nodes_expanded,
+            self.fringe_size,
+            self.max_fringe_size,
+            self.search_depth,
+            self.max_search_depth,
+            self.running_time,
+            self.max_ram_usage )
+
+class BoardLayout():
+    """a class representing an instance of a configuration of the board"""
+        
+    def parseLayoutToVector(self, layout):
+        """convert a comma separated list of chars into a vector"""
+        listOfStrings = layout.split(",")
+        result =[]
+        for s in listOfStrings:
+            result.append(int(s))
+            # TODO: write code...
+        return result
+    
+    def asString(self):
+        return ", ".join('%d'%x for x in self.state)
+        
+    def __init__(self, layout):
+        """initialise from a comma separated list of characters"""
+        self.state = self.parseLayoutToVector(layout)
+
+
+
+def main():
+    runtimeStateTracker = RuntimeState()
+    startingBoardLayout = BoardLayout(sys.argv[2])
+    dispatchCommand(sys.argv[1],startingBoardLayout)
+
+    print(runtimeStateTracker.asString())
+
+
+if __name__ == "__main__":
+    main()
