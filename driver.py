@@ -1,5 +1,5 @@
 import sys
-
+import math
 
 
 def dispatchCommand(command, boardLayout):
@@ -96,16 +96,17 @@ class BoardLayout():
     def __init__(self, layout):
         """initialise from a comma separated list of characters"""
         self.state = self.parseLayoutToVector(layout)
-        self.boardWidth = 3
-        self.boardHeight = 3
+        x = math.trunc(math.sqrt(len(self.state)))
+        # see whether the board is square
+        if (x * x) != len(self.state):
+            raise Exception("board is not square!")
+        self.boardWidth = x
+        self.boardHeight = x
     
-    def findBlankSpace(self):
-        return self.state.index(0)
-
     def availableMoves(self):
         """Return a list of available moves (order is UDLR)"""
         result = []
-        indexOfBlankSpace = self.state.index(0)
+        indexOfBlankSpace = self.state.index(0)  # find location of blank space
         # first look to see whether we can move up
         if indexOfBlankSpace >= self.boardWidth:
             result.append("Up")
