@@ -4,7 +4,9 @@ import math
 
 def dispatchCommand(command, boardLayout):
     print ("dispatching ", command, " with ", boardLayout.asString())
-    if command == "bfs":
+    if command == "testMoves":
+        testMoves(boardLayout)
+    elif command == "bfs":
         doBfs(boardLayout)
     elif command == "dfs":
         doDfs(boardLayout)
@@ -15,6 +17,19 @@ def dispatchCommand(command, boardLayout):
     else:
         displayUsage(command)
         
+def testMoves(boardLayout):
+    ams = boardLayout.availableMoves()
+    print("available moves %s" % ams)
+    # print(runtimeStateTracker.asString())
+    print ("initial board layout was ", boardLayout.asString())
+    upBoard = boardLayout.makeMove(ams[0])
+    print ("result after making move ", ams[0], " was ", upBoard.asString())
+    downBoard = boardLayout.makeMove(ams[1])
+    print ("result after making move ", ams[1], " was ", downBoard.asString())
+    leftBoard = boardLayout.makeMove(ams[2])
+    print ("result after making move ", ams[2], " was ", leftBoard.asString())
+    rightBoard = boardLayout.makeMove(ams[3])
+    print ("result after making move ", ams[3], " was ", rightBoard.asString())
 
         
 def doBfs(boardLayout):
@@ -83,6 +98,10 @@ class BoardLayout():
         
     def parseLayoutToVector(self, layout):
         """convert a comma separated list of chars into a vector"""
+        # check if list is already a list of integers (in which case just return a cloned copy of it)
+        if all(isinstance(x, int) for x in layout):
+            return list(layout)
+            
         listOfStrings = layout.split(",")
         result =[]
         for s in listOfStrings:
@@ -122,13 +141,35 @@ class BoardLayout():
 
         return result
 
+    def makeMove(self, move):
+        """nodestructively move blank tile"""
+        # check whether move is valid
+        validMoves = self.availableMoves()
+        if move not in validMoves:
+            raise Exception("Invalid move!")
+        # so, it's safe to move, so clone a copy of the board to make the move on
+        newBoard = list(self.state)
+        indexOfBlankSpace = newBoard.index(0)  # find location of blank space
+        if move == "Up":
+            swapListElements(newBoard, indexOfBlankSpace, indexOfBlankSpace-self.boardWidth)
+        if move == "Down":
+            swapListElements(newBoard, indexOfBlankSpace, indexOfBlankSpace+self.boardWidth)
+        if move == "Left":
+            swapListElements(newBoard, indexOfBlankSpace, indexOfBlankSpace-1)
+        if move == "Right":
+            swapListElements(newBoard, indexOfBlankSpace, indexOfBlankSpace+1)
+        
+        return BoardLayout(newBoard)
+
+def swapListElements(l, fromIdx, toIdx):
+    tmp = l[toIdx]
+    l[toIdx] = 0
+    l[fromIdx] = tmp
+    
 def main():
     runtimeStateTracker = RuntimeState()
     startingBoardLayout = BoardLayout(sys.argv[2])
     dispatchCommand(sys.argv[1],startingBoardLayout)
-    print("available moves %s" % startingBoardLayout.availableMoves())
-    print(runtimeStateTracker.asString())
-
 
 if __name__ == "__main__":
     main()
