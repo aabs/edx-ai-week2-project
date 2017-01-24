@@ -6,6 +6,8 @@ def dispatchCommand(command, boardLayout):
     print ("dispatching ", command, " with ", boardLayout.asString())
     if command == "testMoves":
         testMoves(boardLayout)
+    elif command == "testBoardCompletion":
+        testBoardCompletion(boardLayout)
     elif command == "bfs":
         doBfs(boardLayout)
     elif command == "dfs":
@@ -31,7 +33,9 @@ def testMoves(boardLayout):
     rightBoard = boardLayout.makeMove(ams[3])
     print ("result after making move ", ams[3], " was ", rightBoard.asString())
 
-        
+def testBoardCompletion(layout):
+    print("layout %s is complete: %r"%(layout.asString(), layout.layoutIsAcceptable()))
+    
 def doBfs(boardLayout):
     """comment"""
     print("doBfs")
@@ -55,6 +59,11 @@ def displayUsage(command):
 def displayState(blah):
     print (blah.asString())
 
+def swapListElements(l, fromIdx, toIdx):
+    tmp = l[toIdx]
+    l[toIdx] = 0
+    l[fromIdx] = tmp
+    
 
 
 class RuntimeState():
@@ -160,12 +169,10 @@ class BoardLayout():
             swapListElements(newBoard, indexOfBlankSpace, indexOfBlankSpace+1)
         
         return BoardLayout(newBoard)
-
-def swapListElements(l, fromIdx, toIdx):
-    tmp = l[toIdx]
-    l[toIdx] = 0
-    l[fromIdx] = tmp
-    
+        
+    def layoutIsAcceptable(self):
+        return all(self.state[i] <= self.state[i+1] for i in range(len(self.state)-1))
+        
 def main():
     runtimeStateTracker = RuntimeState()
     startingBoardLayout = BoardLayout(sys.argv[2])
