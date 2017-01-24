@@ -96,14 +96,36 @@ class BoardLayout():
     def __init__(self, layout):
         """initialise from a comma separated list of characters"""
         self.state = self.parseLayoutToVector(layout)
+        self.boardWidth = 3
+        self.boardHeight = 3
+    
+    def findBlankSpace(self):
+        return self.state.index(0)
 
+    def availableMoves(self):
+        """Return a list of available moves (order is UDLR)"""
+        result = []
+        indexOfBlankSpace = self.state.index(0)
+        # first look to see whether we can move up
+        if indexOfBlankSpace >= self.boardWidth:
+            result.append("Up")
+        # next look to see whether we can move down
+        if indexOfBlankSpace < (self.boardWidth * (self.boardHeight-1)):
+            result.append("Down")
+        # then look to see whether we can move left
+        if (indexOfBlankSpace % self.boardWidth) > 0:
+            result.append("Left")
+        # then look to see whether we can move right
+        if (indexOfBlankSpace % self.boardWidth) < (self.boardWidth-1):
+            result.append("Right")
 
+        return result
 
 def main():
     runtimeStateTracker = RuntimeState()
     startingBoardLayout = BoardLayout(sys.argv[2])
     dispatchCommand(sys.argv[1],startingBoardLayout)
-
+    print("available moves %s" % startingBoardLayout.availableMoves())
     print(runtimeStateTracker.asString())
 
 
