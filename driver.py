@@ -3,12 +3,7 @@ import math
 from collections import deque
 
 def dispatchCommand(command, boardLayout, runtimeStateTracker):
-    print ("dispatching ", command, " with ", boardLayout.asString())
-    if command == "testMoves":
-        testMoves(boardLayout)
-    elif command == "testBoardCompletion":
-        testBoardCompletion(boardLayout)
-    elif command == "bfs":
+    if command == "bfs":
         bfs = BfsSearcher(boardLayout, runtimeStateTracker)
         bfs.search()
     elif command == "dfs":
@@ -165,6 +160,12 @@ class BoardLayout():
     def layoutIsAcceptable(self):
         return all(self.state[i] <= self.state[i+1] for i in range(len(self.state)-1))
         
+class StateSpaceElement():
+    def __init__(self, boardLayout, progenitorStateSpaceElement, action):
+        self.boardLayout = boardLayout
+        self.progenitorLayout = progenitorStateSpaceElement
+        self.originatingAction = action
+    
 class BfsSearcher():
     def __init__(self, startingBoardLayout, stateTracker):
         self.startLayout = startingBoardLayout
@@ -172,11 +173,11 @@ class BfsSearcher():
     def search(self):
         frontier = deque([])
         explored = set([])
-        frontier.append(self.startLayout)
+        frontier.append(StateSpaceElement(self.startLayout, None, None))
         while len(frontier) > 0:
             state = frontier.popleft()
             explored.add(state)
-            if state.layoutIsAcceptable():
+            if state.boardLayout.layoutIsAcceptable():
                 return self.Success(state)
             
             for neighbour in self.generateNeighbours(state):
@@ -185,9 +186,17 @@ class BfsSearcher():
         return self.Failure()
         
     def Success(self, finalState):
-        print("eureka!!!")
+        print("solved!")
+        moves = []
+        s = finalState
+        while s.originatingAction != None:
+            moves.append(s.originatingAction)
+            s = s.progenitorLayout
+        moves.reverse()
+        print(moves)
     def generateNeighbours(self, state):
-        result = [state.makeMove(move) for move in state.availableMoves()]
+        board = state.boardLayout
+        result = [StateSpaceElement(board.makeMove(move), state, move) for move in board.availableMoves()]
         return result
     def Failure(self):
         print("rats!")
