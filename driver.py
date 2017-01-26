@@ -1,15 +1,16 @@
 import sys
 import math
+from collections import deque
 
-
-def dispatchCommand(command, boardLayout):
+def dispatchCommand(command, boardLayout, runtimeStateTracker):
     print ("dispatching ", command, " with ", boardLayout.asString())
     if command == "testMoves":
         testMoves(boardLayout)
     elif command == "testBoardCompletion":
         testBoardCompletion(boardLayout)
     elif command == "bfs":
-        doBfs(boardLayout)
+        bfs = BfsSearcher(boardLayout, runtimeStateTracker)
+        bfs.search()
     elif command == "dfs":
         doDfs(boardLayout)
     elif command == "ast":
@@ -82,16 +83,7 @@ class RuntimeState():
         self.max_ram_usage = 0.0
         
     def asString(self):
-        return """
-path_to_goal: %s
-cost_of_path: %d
-nodes_expanded: %d
-fringe_size: %d
-max_fringe_size: %d
-search_depth: %d
-max_search_depth: %d
-running_time: %.8f
-max_ram_usage: %.8f"""%(
+        return """path_to_goal: %s\ncost_of_path: %d\nnodes_expanded: %d\nfringe_size: %d\nmax_fringe_size: %d\nsearch_depth: %d\nmax_search_depth: %d\nrunning_time: %.8f\nmax_ram_usage: %.8f"""%(
             self.path_to_goal,
             self.cost_of_path,
             self.nodes_expanded,
@@ -173,10 +165,36 @@ class BoardLayout():
     def layoutIsAcceptable(self):
         return all(self.state[i] <= self.state[i+1] for i in range(len(self.state)-1))
         
+class BfsSearcher():
+    def __init__(self, startingBoardLayout, stateTracker):
+        self.startLayout = startingBoardLayout
+        self.stateTracker = stateTracker
+    def search(self):
+        frontier = deque([])
+        explored = set([])
+        frontier.append(self.startLayout)
+        while len(frontier) > 0:
+            state = frontier.popleft()
+            explored.add(state)
+            if state.layoutIsAcceptable():
+                return self.Success(state)
+            
+            for neighbour in self.generateNeighbours(state):
+                if neighbour not in frontier and neighbour not in explored :
+                    frontier.append(neighbour)
+        return self.Failure()
+        
+    def Success(self, finalState):
+        print("eureka!!!")
+    def generateNeighbours(self, state):
+        result = [state.makeMove(move) for move in state.availableMoves()]
+        return result
+    def Failure(self):
+        print("rats!")
 def main():
     runtimeStateTracker = RuntimeState()
     startingBoardLayout = BoardLayout(sys.argv[2])
-    dispatchCommand(sys.argv[1],startingBoardLayout)
+    dispatchCommand(sys.argv[1],startingBoardLayout, runtimeStateTracker)
 
 if __name__ == "__main__":
     main()
