@@ -1,6 +1,8 @@
 import sys
 import math
 from collections import deque
+import time
+import resource
 
 def dispatchCommand(command, boardLayout):
     if command == "bfs":
@@ -39,11 +41,12 @@ def swapListElements(l, fromIdx, toIdx):
     l[toIdx] = 0
     l[fromIdx] = tmp
     
-def contains(target, seq1, comp):
+def contains(target, seq1):
     for item in seq1:
-        if comp(target,item):
+        if target.boardLayout.asString() == item.boardLayout.asString():
             return True
     return False
+    
 class BoardLayout():
     """a class representing an instance of a configuration of the board"""
         
@@ -114,16 +117,14 @@ class BoardLayout():
         
     def layoutIsAcceptable(self):
         return all(self.state[i] <= self.state[i+1] for i in range(len(self.state)-1))
-    
-def boards_equal(x, y):
-    return x.boardLayout.asString() == y.boardLayout.asString()
-        
+      
 class StateSpaceElement():
     def __init__(self, boardLayout, progenitorStateSpaceElement, action):
         self.boardLayout = boardLayout
         self.progenitorLayout = progenitorStateSpaceElement
         self.originatingAction = action
-    
+     
+
 class BreadthFirstSearch():
     def __init__(self, startingBoardLayout):
         self.startLayout = startingBoardLayout
@@ -131,8 +132,6 @@ class BreadthFirstSearch():
         self.explored = set([])
         self.max_fringe_size = len(self.fringe)
         self.max_search_depth = 0
-        self.running_time = 0.0
-        self.max_ram_usage = 0.0
 
     def search(self):
         self.fringe.append(StateSpaceElement(self.startLayout, None, None))
@@ -140,18 +139,18 @@ class BreadthFirstSearch():
         
         while len(self.fringe) > 0:
             state = self.fringe.popleft()
-            self.explored.add(state)
-            self.max_search_depth = max(self.max_search_depth, len(self.getPathToGoal(state)))
             
             if state.boardLayout.layoutIsAcceptable():
                 return self.Success(state)
+                
+            self.explored.add(state)
+            self.max_search_depth = max(self.max_search_depth, len(self.getPathToGoal(state)))
             
             for neighbour in self.expandNode(state):
-                if not contains(neighbour, self.fringe, boards_equal) and not  contains(neighbour, self.explored, boards_equal):
+                if not contains(neighbour, self.fringe) and not contains(neighbour, self.explored):
                     self.fringe.append(neighbour)
             
             self.max_fringe_size = max(self.max_fringe_size, len(self.fringe))
-
         return self.Failure()
         
     def solutionAsString(self, finalState):
@@ -164,11 +163,10 @@ class BreadthFirstSearch():
             self.max_fringe_size,
             len(path_to_goal),
             self.max_search_depth,
-            self.running_time,
-            self.max_ram_usage )
+            (time.time() - start_time),
+            resource.getrusage(resource.RUSAGE_SELF).ru_maxrss /1024.0) # units of max_rss is 1kb for linux (apparently)
       
     def Success(self, finalState):
-        print("solved!")
         print(self.solutionAsString(finalState))
         return 0
     
@@ -193,5 +191,6 @@ def main():
     startingBoardLayout = BoardLayout(sys.argv[2])
     return dispatchCommand(sys.argv[1],startingBoardLayout)
 
+start_time = time.time()
 if __name__ == "__main__":
     main()
