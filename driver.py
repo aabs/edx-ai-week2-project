@@ -2,10 +2,10 @@ import sys
 import math
 from collections import deque
 
-def dispatchCommand(command, boardLayout, runtimeStateTracker):
+def dispatchCommand(command, boardLayout):
     if command == "bfs":
-        bfs = BfsSearcher(boardLayout, runtimeStateTracker)
-        bfs.search()
+        bfs = BreadthFirstSearch(boardLayout)
+        return bfs.search()
     elif command == "dfs":
         doDfs(boardLayout)
     elif command == "ast":
@@ -15,27 +15,6 @@ def dispatchCommand(command, boardLayout, runtimeStateTracker):
     else:
         displayUsage(command)
         
-def testMoves(boardLayout):
-    ams = boardLayout.availableMoves()
-    print("available moves %s" % ams)
-    # print(runtimeStateTracker.asString())
-    print ("initial board layout was ", boardLayout.asString())
-    upBoard = boardLayout.makeMove(ams[0])
-    print ("result after making move ", ams[0], " was ", upBoard.asString())
-    downBoard = boardLayout.makeMove(ams[1])
-    print ("result after making move ", ams[1], " was ", downBoard.asString())
-    leftBoard = boardLayout.makeMove(ams[2])
-    print ("result after making move ", ams[2], " was ", leftBoard.asString())
-    rightBoard = boardLayout.makeMove(ams[3])
-    print ("result after making move ", ams[3], " was ", rightBoard.asString())
-
-def testBoardCompletion(layout):
-    print("layout %s is complete: %r"%(layout.asString(), layout.layoutIsAcceptable()))
-    
-def doBfs(boardLayout):
-    """comment"""
-    print("doBfs")
-
 def doDfs(boardLayout):
     """comment"""
     print("doDfs")
@@ -60,35 +39,11 @@ def swapListElements(l, fromIdx, toIdx):
     l[toIdx] = 0
     l[fromIdx] = tmp
     
-
-
-class RuntimeState():
-    """This class is responsible for keeping track of the various aspects of runtime performance"""
-    
-    def __init__(self):
-        """initialise with default characters"""
-        self.path_to_goal = []
-        self.cost_of_path = 0
-        self.nodes_expanded = 0
-        self.fringe_size = 0
-        self.max_fringe_size = 0
-        self.search_depth = 0
-        self.max_search_depth = 0
-        self.running_time = 0.0
-        self.max_ram_usage = 0.0
-        
-    def asString(self):
-        return """path_to_goal: %s\ncost_of_path: %d\nnodes_expanded: %d\nfringe_size: %d\nmax_fringe_size: %d\nsearch_depth: %d\nmax_search_depth: %d\nrunning_time: %.8f\nmax_ram_usage: %.8f"""%(
-            self.path_to_goal,
-            self.cost_of_path,
-            self.nodes_expanded,
-            self.fringe_size,
-            self.max_fringe_size,
-            self.search_depth,
-            self.max_search_depth,
-            self.running_time,
-            self.max_ram_usage )
-
+def contains(target, seq1, comp):
+    for item in seq1:
+        if comp(target,item):
+            return True
+    return False
 class BoardLayout():
     """a class representing an instance of a configuration of the board"""
         
@@ -159,6 +114,9 @@ class BoardLayout():
         
     def layoutIsAcceptable(self):
         return all(self.state[i] <= self.state[i+1] for i in range(len(self.state)-1))
+    
+def boards_equal(x, y):
+    return x.boardLayout.asString() == y.boardLayout.asString()
         
 class StateSpaceElement():
     def __init__(self, boardLayout, progenitorStateSpaceElement, action):
@@ -166,44 +124,74 @@ class StateSpaceElement():
         self.progenitorLayout = progenitorStateSpaceElement
         self.originatingAction = action
     
-class BfsSearcher():
-    def __init__(self, startingBoardLayout, stateTracker):
+class BreadthFirstSearch():
+    def __init__(self, startingBoardLayout):
         self.startLayout = startingBoardLayout
-        self.stateTracker = stateTracker
+        self.fringe = deque([])
+        self.explored = set([])
+        self.max_fringe_size = len(self.fringe)
+        self.max_search_depth = 0
+        self.running_time = 0.0
+        self.max_ram_usage = 0.0
+
     def search(self):
-        frontier = deque([])
-        explored = set([])
-        frontier.append(StateSpaceElement(self.startLayout, None, None))
-        while len(frontier) > 0:
-            state = frontier.popleft()
-            explored.add(state)
+        self.fringe.append(StateSpaceElement(self.startLayout, None, None))
+        self.max_fringe_size = max(self.max_fringe_size, len(self.fringe))
+        
+        while len(self.fringe) > 0:
+            state = self.fringe.popleft()
+            self.explored.add(state)
+            self.max_search_depth = max(self.max_search_depth, len(self.getPathToGoal(state)))
+            
             if state.boardLayout.layoutIsAcceptable():
                 return self.Success(state)
             
-            for neighbour in self.generateNeighbours(state):
-                if neighbour not in frontier and neighbour not in explored :
-                    frontier.append(neighbour)
+            for neighbour in self.expandNode(state):
+                if not contains(neighbour, self.fringe, boards_equal) and not  contains(neighbour, self.explored, boards_equal):
+                    self.fringe.append(neighbour)
+            
+            self.max_fringe_size = max(self.max_fringe_size, len(self.fringe))
+
         return self.Failure()
         
+    def solutionAsString(self, finalState):
+        path_to_goal = self.getPathToGoal(finalState)
+        return """path_to_goal: %s\ncost_of_path: %d\nnodes_expanded: %d\nfringe_size: %d\nmax_fringe_size: %d\nsearch_depth: %d\nmax_search_depth: %d\nrunning_time: %.8f\nmax_ram_usage: %.8f"""%(
+            path_to_goal,
+            len(path_to_goal),
+            len(self.explored),
+            len(self.fringe),
+            self.max_fringe_size,
+            len(path_to_goal),
+            self.max_search_depth,
+            self.running_time,
+            self.max_ram_usage )
+      
     def Success(self, finalState):
         print("solved!")
+        print(self.solutionAsString(finalState))
+        return 0
+    
+    def getPathToGoal(self, finalState):
         moves = []
         s = finalState
         while s.originatingAction != None:
             moves.append(s.originatingAction)
             s = s.progenitorLayout
-        moves.reverse()
-        print(moves)
-    def generateNeighbours(self, state):
+        moves.reverse() 
+        return moves
+        
+    def expandNode(self, state):
         board = state.boardLayout
         result = [StateSpaceElement(board.makeMove(move), state, move) for move in board.availableMoves()]
         return result
+        
     def Failure(self):
         print("rats!")
+        return 1
 def main():
-    runtimeStateTracker = RuntimeState()
     startingBoardLayout = BoardLayout(sys.argv[2])
-    dispatchCommand(sys.argv[1],startingBoardLayout, runtimeStateTracker)
+    return dispatchCommand(sys.argv[1],startingBoardLayout)
 
 if __name__ == "__main__":
     main()
