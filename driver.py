@@ -23,9 +23,6 @@ def displayUsage(command):
     print("dont understand ", command)
     print("please invoke like this: python driver.py <method> <board>, where board is a comma separated list of digits from 0 to 8")
 
-def displayState(blah):
-    print (blah.asString())
-
 def swapListElements(l, fromIdx, toIdx):
     tmp = l[toIdx]
     l[toIdx] = 0
@@ -122,7 +119,9 @@ class SearchAlgorithm():
         self.max_search_depth = 0
 
     def Success(self, finalState):
-        print(self.solutionAsString(finalState))
+        f = open('output.txt', 'w')
+        f.write(self.solutionAsString(finalState))
+        f.close()
         return 0
 
     def getPathToGoal(self, finalState):
@@ -157,13 +156,10 @@ class SearchAlgorithm():
             resource.getrusage(
                 resource.RUSAGE_SELF).ru_maxrss / 1024.0)  # units of max_rss is 1kb for linux (apparently)
 
-class BreadthFirstSearch():
+class BreadthFirstSearch(SearchAlgorithm):
     def __init__(self, startingBoardLayout):
         self.startLayout = startingBoardLayout
-        self.fringe = deque([])
-        self.explored = set([])
-        self.max_fringe_size = len(self.fringe)
-        self.max_search_depth = 0
+        SearchAlgorithm.__init__(self, deque([]), set([]))
 
     def search(self):
         self.fringe.append(StateSpaceElement(self.startLayout, None, None))
@@ -184,43 +180,6 @@ class BreadthFirstSearch():
             
             self.max_fringe_size = max(self.max_fringe_size, len(self.fringe))
         return self.Failure()
-        
-    def solutionAsString(self, finalState):
-        path_to_goal = self.getPathToGoal(finalState)
-        return """path_to_goal: %s\ncost_of_path: %d\nnodes_expanded: %d\nfringe_size: %d\nmax_fringe_size: %d\nsearch_depth: %d\nmax_search_depth: %d\nrunning_time: %.8f\nmax_ram_usage: %.8f"""%(
-            path_to_goal,
-            len(path_to_goal),
-            len(self.explored),
-            len(self.fringe),
-            self.max_fringe_size,
-            len(path_to_goal),
-            self.max_search_depth,
-            (time.time() - start_time),
-            resource.getrusage(resource.RUSAGE_SELF).ru_maxrss /1024.0) # units of max_rss is 1kb for linux (apparently)
-      
-    def Success(self, finalState):
-        f = open('output.txt', 'w')
-        f.write(self.solutionAsString(finalState))
-        f.close()
-        return 0
-    
-    def getPathToGoal(self, finalState):
-        moves = []
-        s = finalState
-        while s.originatingAction != None:
-            moves.append(s.originatingAction)
-            s = s.progenitorLayout
-        moves.reverse() 
-        return moves
-        
-    def expandNode(self, state):
-        board = state.boardLayout
-        result = [StateSpaceElement(board.makeMove(move), state, move) for move in board.availableMoves()]
-        return result
-        
-    def Failure(self):
-        print("rats!")
-        return 1
 
 
 class DepthFirstSearch(SearchAlgorithm):
