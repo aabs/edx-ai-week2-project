@@ -4,34 +4,24 @@ from collections import deque
 import time
 import resource
 
-def dispatchCommand(command, boardLayout):
+def dispatchCommand(command, boardlayout):
     if command == "bfs":
-        bfs = BreadthFirstSearch(boardLayout)
+        bfs = BreadthFirstSearch(boardlayout)
         return bfs.search()
     elif command == "dfs":
-        doDfs(boardLayout)
-    elif command == "ast":
-        doAst(boardLayout)
-    elif command == "ida":
-        doIda(boardLayout)
+        dfs = DepthFirstSearch(boardlayout)
+        return dfs.search()
+    # elif command == "ast":
+    #     doAst(board_layout)
+    # elif command == "ida":
+    #     doIda(board_layout)
     else:
         displayUsage(command)
         
-def doDfs(boardLayout):
-    """comment"""
-    print("doDfs")
-
-def doAst(boardLayout):
-    """comment"""
-    print("doAst")
-
-def doIda(boardLayout):
-    """comment"""
-    print("doIda")
-
 def displayUsage(command):
-    """comment"""
+    """please invoke like this: python driver.py <method> <board>, where board is a comma separated list of digits from 0 to 8"""
     print("dont understand ", command)
+    print("please invoke like this: python driver.py <method> <board>, where board is a comma separated list of digits from 0 to 8")
 
 def displayState(blah):
     print (blah.asString())
@@ -123,7 +113,49 @@ class StateSpaceElement():
         self.boardLayout = boardLayout
         self.progenitorLayout = progenitorStateSpaceElement
         self.originatingAction = action
-     
+
+class SearchAlgorithm():
+    def __init__(self, fringe, explored):
+        self.fringe = fringe
+        self.explored = explored
+        self.max_fringe_size = len(self.fringe)
+        self.max_search_depth = 0
+
+    def Success(self, finalState):
+        print(self.solutionAsString(finalState))
+        return 0
+
+    def getPathToGoal(self, finalState):
+        moves = []
+        s = finalState
+        while s.originatingAction != None:
+            moves.append(s.originatingAction)
+            s = s.progenitorLayout
+        moves.reverse()
+        return moves
+
+    def expandNode(self, state):
+        board = state.boardLayout
+        result = [StateSpaceElement(board.makeMove(move), state, move) for move in board.availableMoves()]
+        return result
+
+    def Failure(self):
+        print("rats!")
+        return 1
+
+    def solutionAsString(self, finalState):
+        path_to_goal = self.getPathToGoal(finalState)
+        return """path_to_goal: %s\ncost_of_path: %d\nnodes_expanded: %d\nfringe_size: %d\nmax_fringe_size: %d\nsearch_depth: %d\nmax_search_depth: %d\nrunning_time: %.8f\nmax_ram_usage: %.8f""" % (
+            path_to_goal,
+            len(path_to_goal),
+            len(self.explored),
+            len(self.fringe),
+            self.max_fringe_size,
+            len(path_to_goal),
+            self.max_search_depth,
+            (time.time() - start_time),
+            resource.getrusage(
+                resource.RUSAGE_SELF).ru_maxrss / 1024.0)  # units of max_rss is 1kb for linux (apparently)
 
 class BreadthFirstSearch():
     def __init__(self, startingBoardLayout):
@@ -187,6 +219,34 @@ class BreadthFirstSearch():
     def Failure(self):
         print("rats!")
         return 1
+
+
+class DepthFirstSearch(SearchAlgorithm):
+    def __init__(self, startingBoardLayout):
+        """Initailises the runtime state. Uses a list (as a stack) for the fringe, and a set for the explored set."""
+        self.startLayout = startingBoardLayout
+        SearchAlgorithm.__init__(self, [], set([]))
+
+    def search(self):
+        self.fringe.append(StateSpaceElement(self.startLayout, None, None))
+        self.max_fringe_size = max(self.max_fringe_size, len(self.fringe))
+
+        while len(self.fringe) > 0:
+            state = self.fringe.pop()
+
+            if state.boardLayout.layoutIsAcceptable():
+                return self.Success(state)
+
+            self.explored.add(state)
+            self.max_search_depth = max(self.max_search_depth, len(self.getPathToGoal(state)))
+
+            for neighbour in self.expandNode(state):
+                if not contains(neighbour, self.fringe) and not contains(neighbour, self.explored):
+                    self.fringe.append(neighbour)
+
+            self.max_fringe_size = max(self.max_fringe_size, len(self.fringe))
+        return self.Failure()
+
 def main():
     startingBoardLayout = BoardLayout(sys.argv[2])
     return dispatchCommand(sys.argv[1],startingBoardLayout)
