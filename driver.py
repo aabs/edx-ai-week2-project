@@ -167,7 +167,9 @@ class BreadthFirstSearch():
             resource.getrusage(resource.RUSAGE_SELF).ru_maxrss /1024.0) # units of max_rss is 1kb for linux (apparently)
       
     def Success(self, finalState):
-        print(self.solutionAsString(finalState))
+        f = open('output.txt', 'w')
+        f.write(self.solutionAsString(finalState))
+        f.close()
         return 0
     
     def getPathToGoal(self, finalState):
