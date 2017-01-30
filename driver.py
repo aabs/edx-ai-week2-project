@@ -3,66 +3,96 @@ import math
 from collections import deque
 import time
 import resource
+import cProfile
 
-def dispatchCommand(command, boardlayout):
+profile_the_code = True
+output_to_console = True
+log_level = 2
+
+
+def logit(method):
+    def timed(*args, **kw):
+        log('+ %r' % method.__name__, level=0)
+        ts = time.perf_counter()
+        result = method(*args, **kw)
+        te = time.perf_counter()
+        log('- %r %2.6f sec' % (method.__name__, te - ts), level=0)
+        return result
+
+    return timed
+
+def log(msg, level=0):
+    if level >= log_level:
+        print(level, msg)
+
+
+def dispatch_command(command, board_layout):
     if command == "bfs":
-        bfs = BreadthFirstSearch(boardlayout)
+        bfs = BreadthFirstSearch(board_layout)
         return bfs.search()
     elif command == "dfs":
-        dfs = DepthFirstSearch(boardlayout)
+        dfs = DepthFirstSearch(board_layout)
         return dfs.search()
-    # elif command == "ast":
-    #     doAst(board_layout)
-    # elif command == "ida":
-    #     doIda(board_layout)
+    elif command == "ast":
+        ast = AStarSearch(board_layout)
+        return ast.search()
+    elif command == "ida":
+        ida = IDAStarSearch(board_layout)
+        return ida.search()
     else:
-        displayUsage(command)
-        
-def displayUsage(command):
+        display_usage(command)
+
+
+def display_usage(command):
     """please invoke like this: python driver.py <method> <board>, where board is a comma separated list of digits from 0 to 8"""
     print("dont understand ", command)
-    print("please invoke like this: python driver.py <method> <board>, where board is a comma separated list of digits from 0 to 8")
+    print(
+        "please invoke like this: python driver.py <method> <board>, where board is a comma separated list of digits from 0 to 8")
 
-def swapListElements(l, fromIdx, toIdx):
-    tmp = l[toIdx]
-    l[toIdx] = 0
-    l[fromIdx] = tmp
-    
+
+def swap_list_elements(l, from_idx, to_idx):
+    tmp = l[to_idx]
+    l[to_idx] = 0
+    l[from_idx] = tmp
+
+
 def contains(target, seq1):
     for item in seq1:
-        if target.boardLayout.asString() == item.boardLayout.asString():
+        if target.board_layout._layout_hash == item.board_layout._layout_hash:
             return True
     return False
-    
+
+
 class BoardLayout():
     """a class representing an instance of a configuration of the board"""
-        
-    def parseLayoutToVector(self, layout):
+
+    def parse_layout_to_vector(self, layout):
         """convert a comma separated list of chars into a vector"""
         # check if list is already a list of integers (in which case just return a cloned copy of it)
         if all(isinstance(x, int) for x in layout):
             return list(layout)
-            
-        listOfStrings = layout.split(",")
-        result =[]
-        for s in listOfStrings:
+
+        list_of_strings = layout.split(",")
+        result = []
+        for s in list_of_strings:
             result.append(int(s))
             # TODO: write code...
         return result
-    
-    def asString(self):
-        return ", ".join('%d'%x for x in self.state)
-        
-    def __init__(self, layout):
+
+    def __init__(self, layout, expectwellformed=False):
         """initialise from a comma separated list of characters"""
-        self.state = self.parseLayoutToVector(layout)
+        if expectwellformed:
+            self.state = layout
+        else:
+            self.state = self.parse_layout_to_vector(layout)
         x = math.trunc(math.sqrt(len(self.state)))
         # see whether the board is square
         if (x * x) != len(self.state):
             raise Exception("board is not square!")
         self.boardWidth = x
         self.boardHeight = x
-    
+        self._layout_hash = str(self.state).__hash__()
+
     def availableMoves(self):
         """Return a list of available moves (order is UDLR)"""
         result = []
@@ -71,13 +101,13 @@ class BoardLayout():
         if indexOfBlankSpace >= self.boardWidth:
             result.append("Up")
         # next look to see whether we can move down
-        if indexOfBlankSpace < (self.boardWidth * (self.boardHeight-1)):
+        if indexOfBlankSpace < (self.boardWidth * (self.boardHeight - 1)):
             result.append("Down")
         # then look to see whether we can move left
         if (indexOfBlankSpace % self.boardWidth) > 0:
             result.append("Left")
         # then look to see whether we can move right
-        if (indexOfBlankSpace % self.boardWidth) < (self.boardWidth-1):
+        if (indexOfBlankSpace % self.boardWidth) < (self.boardWidth - 1):
             result.append("Right")
 
         return result
@@ -92,24 +122,51 @@ class BoardLayout():
         newBoard = list(self.state)
         indexOfBlankSpace = newBoard.index(0)  # find location of blank space
         if move == "Up":
-            swapListElements(newBoard, indexOfBlankSpace, indexOfBlankSpace-self.boardWidth)
+            swap_list_elements(newBoard, indexOfBlankSpace, indexOfBlankSpace - self.boardWidth)
         if move == "Down":
-            swapListElements(newBoard, indexOfBlankSpace, indexOfBlankSpace+self.boardWidth)
+            swap_list_elements(newBoard, indexOfBlankSpace, indexOfBlankSpace + self.boardWidth)
         if move == "Left":
-            swapListElements(newBoard, indexOfBlankSpace, indexOfBlankSpace-1)
+            swap_list_elements(newBoard, indexOfBlankSpace, indexOfBlankSpace - 1)
         if move == "Right":
-            swapListElements(newBoard, indexOfBlankSpace, indexOfBlankSpace+1)
-        
-        return BoardLayout(newBoard)
-        
-    def layoutIsAcceptable(self):
-        return all(self.state[i] <= self.state[i+1] for i in range(len(self.state)-1))
-      
+            swap_list_elements(newBoard, indexOfBlankSpace, indexOfBlankSpace + 1)
+        result = BoardLayout(newBoard, True)
+        return result
+
+    def layout_is_acceptable(self):
+        return all(self.state[i] <= self.state[i + 1] for i in range(len(self.state) - 1))
+
+    def __hash__(self):
+        return self._layout_hash
+
+    def __eq__(self, other):
+        return self._layout_hash == other._layout_hash
+
 class StateSpaceElement():
-    def __init__(self, boardLayout, progenitorStateSpaceElement, action):
-        self.boardLayout = boardLayout
-        self.progenitorLayout = progenitorStateSpaceElement
-        self.originatingAction = action
+    def __init__(self, board_layout, parent_state_space_element, action):
+        self.board_layout = board_layout
+        self.parent_layout = parent_state_space_element
+        self.originating_action = action
+        self.index_key = None
+
+    def board_layout_is_acceptable(self):
+        return self.get_board_layout().layout_is_acceptable()
+
+    def get_board_layout(self):
+        if self.board_layout is None:
+            parentLayout = self.parent_layout.get_board_layout()
+            self.board_layout = parentLayout.makeMove(self.originating_action)
+        return self.board_layout
+
+    def get_layout_as_string(self):
+        if self.index_key is not None:
+            return self.index_key
+        self.index_key = str(self.board_layout)
+        return self.index_key
+
+    def __hash__(self):
+        return self.board_layout.__hash__()
+    def __eq__(self, other):
+        return self.board_layout._layout_hash == other.board_layout._layout_hash
 
 class SearchAlgorithm():
     def __init__(self, fringe, explored):
@@ -119,31 +176,40 @@ class SearchAlgorithm():
         self.max_search_depth = 0
 
     def Success(self, finalState):
-        f = open('output.txt', 'w')
-        f.write(self.solutionAsString(finalState))
-        f.close()
+        msg = self.solution_as_string(finalState)
+        if output_to_console:
+            print(msg)
+        else:
+            f = open('output.txt', 'w')
+            f.write(msg)
+            f.close()
         return 0
 
-    def getPathToGoal(self, finalState):
+    def get_path_to_goal(self, finalState):
         moves = []
         s = finalState
-        while s.originatingAction != None:
-            moves.append(s.originatingAction)
-            s = s.progenitorLayout
+        while s.originating_action is not None:
+            moves.append(s.originating_action)
+            s = s.parent_layout
         moves.reverse()
         return moves
 
-    def expandNode(self, state):
-        board = state.boardLayout
+    def expand_node(self, state):
+        board = state.board_layout
         result = [StateSpaceElement(board.makeMove(move), state, move) for move in board.availableMoves()]
+        # changing this to not bother generating the new board layout till it is needed, so that expansion does not take
+        # place till the item is taken off of the fringe.
+        # a value of None for the board layout means generate forward from the nearest progenitor layout that has an
+        # explicit layout (which may well be the initial board layout)
+        #result = [StateSpaceElement(None, state, move) for move in board.availableMoves()]
         return result
 
-    def Failure(self):
+    def failure(self):
         print("rats!")
         return 1
 
-    def solutionAsString(self, finalState):
-        path_to_goal = self.getPathToGoal(finalState)
+    def solution_as_string(self, final_state):
+        path_to_goal = self.get_path_to_goal(final_state)
         return """path_to_goal: %s\ncost_of_path: %d\nnodes_expanded: %d\nfringe_size: %d\nmax_fringe_size: %d\nsearch_depth: %d\nmax_search_depth: %d\nrunning_time: %.8f\nmax_ram_usage: %.8f""" % (
             path_to_goal,
             len(path_to_goal),
@@ -156,33 +222,68 @@ class SearchAlgorithm():
             resource.getrusage(
                 resource.RUSAGE_SELF).ru_maxrss / 1024.0)  # units of max_rss is 1kb for linux (apparently)
 
+    def update_max_fringe_size(self):
+        self.max_fringe_size = max(self.max_fringe_size, len(self.fringe))
+        if self.max_fringe_size % 500 == 0:
+            log(" %d"%self.max_fringe_size, 2)
+
+
 class BreadthFirstSearch(SearchAlgorithm):
-    def __init__(self, startingBoardLayout):
-        self.startLayout = startingBoardLayout
-        SearchAlgorithm.__init__(self, deque([]), set([]))
+    def __init__(self, starting_board_layout):
+        self.start_layout = starting_board_layout
+        SearchAlgorithm.__init__(self, deque([]), dict())
 
     def search(self):
-        self.fringe.append(StateSpaceElement(self.startLayout, None, None))
-        self.max_fringe_size = max(self.max_fringe_size, len(self.fringe))
-        
+        self.fringe.append(StateSpaceElement(self.start_layout, None, None))
+        self.update_max_fringe_size()
+
         while len(self.fringe) > 0:
             state = self.fringe.popleft()
-            
-            if state.boardLayout.layoutIsAcceptable():
+
+            if state.board_layout_is_acceptable():
                 return self.Success(state)
-                
-            self.explored.add(state)
-            self.max_search_depth = max(self.max_search_depth, len(self.getPathToGoal(state)))
-            
-            for neighbour in self.expandNode(state):
-                if not contains(neighbour, self.fringe) and not contains(neighbour, self.explored):
+
+            self.explored[state.board_layout._layout_hash] = state
+            self.max_search_depth = max(self.max_search_depth, len(self.get_path_to_goal(state)))
+
+            for neighbour in self.expand_node(state):
+                tmp1 = self.explored.get(neighbour.board_layout._layout_hash, None)
+                if not contains(neighbour, self.fringe) and tmp1 is None:
                     self.fringe.append(neighbour)
-            
-            self.max_fringe_size = max(self.max_fringe_size, len(self.fringe))
-        return self.Failure()
+
+            self.update_max_fringe_size()
+        return self.failure()
 
 
 class DepthFirstSearch(SearchAlgorithm):
+    def __init__(self, startingBoardLayout):
+        """Initailises the runtime state. Uses a list (as a stack) for the fringe, and a set for the explored set."""
+        self.startLayout = startingBoardLayout
+        SearchAlgorithm.__init__(self, [], dict())
+
+    def search(self):
+        self.fringe.append(StateSpaceElement(self.startLayout, None, None))
+        self.update_max_fringe_size()
+
+        while len(self.fringe) > 0:
+            state = self.fringe.pop()
+
+            if state.board_layout_is_acceptable():
+                return self.Success(state)
+
+            self.explored[state.board_layout._layout_hash] = state
+            self.max_search_depth = max(self.max_search_depth, len(self.get_path_to_goal(state)))
+
+            for neighbour in self.expand_node(state):
+                tmp1 = self.explored.get(neighbour.board_layout._layout_hash, None)
+                if not contains(neighbour, self.fringe) and tmp1 is None:
+                    self.fringe.append(neighbour)
+
+            self.update_max_fringe_size()
+        return self.failure()
+
+
+class AStarSearch(SearchAlgorithm):
     def __init__(self, startingBoardLayout):
         """Initailises the runtime state. Uses a list (as a stack) for the fringe, and a set for the explored set."""
         self.startLayout = startingBoardLayout
@@ -190,28 +291,76 @@ class DepthFirstSearch(SearchAlgorithm):
 
     def search(self):
         self.fringe.append(StateSpaceElement(self.startLayout, None, None))
-        self.max_fringe_size = max(self.max_fringe_size, len(self.fringe))
+        self.update_max_fringe_size()
 
         while len(self.fringe) > 0:
             state = self.fringe.pop()
 
-            if state.boardLayout.layoutIsAcceptable():
+            if state.board_layout_is_acceptable():
                 return self.Success(state)
 
             self.explored.add(state)
-            self.max_search_depth = max(self.max_search_depth, len(self.getPathToGoal(state)))
+            self.max_search_depth = max(self.max_search_depth, len(self.get_path_to_goal(state)))
 
-            for neighbour in self.expandNode(state):
+            for neighbour in self.expand_node(state):
                 if not contains(neighbour, self.fringe) and not contains(neighbour, self.explored):
                     self.fringe.append(neighbour)
 
-            self.max_fringe_size = max(self.max_fringe_size, len(self.fringe))
-        return self.Failure()
+            self.update_max_fringe_size()
+        return self.failure()
+
+
+class IDAStarSearch(SearchAlgorithm):
+    def __init__(self, startingBoardLayout):
+        """Initailises the runtime state. Uses a list (as a stack) for the fringe, and a set for the explored set."""
+        self.startLayout = startingBoardLayout
+        SearchAlgorithm.__init__(self, [], set([]))
+
+    def search(self):
+        self.fringe.append(StateSpaceElement(self.startLayout, None, None))
+        self.update_max_fringe_size()
+
+        while len(self.fringe) > 0:
+            state = self.fringe.pop()
+
+            if state.board_layout_is_acceptable():
+                return self.Success(state)
+
+            self.explored.add(state)
+            self.max_search_depth = max(self.max_search_depth, len(self.get_path_to_goal(state)))
+
+            for neighbour in self.expand_node(state):
+                if not contains(neighbour, self.fringe) and not contains(neighbour, self.explored):
+                    self.fringe.append(neighbour)
+
+            self.update_max_fringe_size()
+        return self.failure()
+
 
 def main():
     startingBoardLayout = BoardLayout(sys.argv[2])
-    return dispatchCommand(sys.argv[1],startingBoardLayout)
+    return dispatch_command(sys.argv[1], startingBoardLayout)
+
 
 start_time = time.time()
 if __name__ == "__main__":
-    main()
+    if profile_the_code:
+        pr = cProfile.Profile()
+        pr.enable()
+        main()
+        pr.disable()
+        # after your program ends
+        pr.print_stats(sort="tottime")
+    else:
+        main()
+
+# a nice 7 step solution: bfs 1,2,5,0,4,8,3,6,7
+# path_to_goal: ['Down', 'Right', 'Right', 'Up', 'Up', 'Left', 'Left']
+# cost_of_path: 7
+# nodes_expanded: 134
+# fringe_size: 102
+# max_fringe_size: 103
+# search_depth: 7
+# max_search_depth: 7
+# running_time: 0.01337290
+# max_ram_usage: 7920.00000000

@@ -6,5 +6,6 @@ Details of the requirements can be found [here](https://courses.edx.org/courses/
 
 ## Tasks
 
-- [ ] Implement a tree search algorithm
-- [ ] Break out the completion to a separate function and pass as param to search algorithm
+- [x] Implement a tree search algorithm
+- [x] Break out the completion to a separate function and pass as param to search algorithm
+- [ ] Performance stinks. is this python, generally, or am I using it wrong?
