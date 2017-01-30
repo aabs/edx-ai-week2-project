@@ -4,10 +4,11 @@ from collections import deque
 import time
 import resource
 import cProfile
+import unittest
 
-profile_the_code = True
+profile_the_code = False
 output_to_console = True
-log_level = 2
+log_level = 3
 
 
 def logit(method):
@@ -129,6 +130,7 @@ class BoardLayout():
             swap_list_elements(newBoard, indexOfBlankSpace, indexOfBlankSpace - 1)
         if move == "Right":
             swap_list_elements(newBoard, indexOfBlankSpace, indexOfBlankSpace + 1)
+
         result = BoardLayout(newBoard, True)
         return result
 
@@ -175,15 +177,15 @@ class SearchAlgorithm():
         self.max_fringe_size = len(self.fringe)
         self.max_search_depth = 0
 
-    def Success(self, finalState):
+    def success(self, finalState):
         msg = self.solution_as_string(finalState)
         if output_to_console:
-            print(msg)
+            log(msg, 3)
         else:
             f = open('output.txt', 'w')
             f.write(msg)
             f.close()
-        return 0
+        return (self, finalState)
 
     def get_path_to_goal(self, finalState):
         moves = []
@@ -234,22 +236,24 @@ class BreadthFirstSearch(SearchAlgorithm):
         SearchAlgorithm.__init__(self, deque([]), dict())
 
     def search(self):
-        self.fringe.append(StateSpaceElement(self.start_layout, None, None))
+        fr = self.fringe
+        app = fr.append
+        app(StateSpaceElement(self.start_layout, None, None))
         self.update_max_fringe_size()
 
-        while len(self.fringe) > 0:
-            state = self.fringe.popleft()
+        while len(fr) > 0:
+            state = fr.popleft()
 
             if state.board_layout_is_acceptable():
-                return self.Success(state)
+                return self.success(state)
 
             self.explored[state.board_layout._layout_hash] = state
             self.max_search_depth = max(self.max_search_depth, len(self.get_path_to_goal(state)))
 
             for neighbour in self.expand_node(state):
                 tmp1 = self.explored.get(neighbour.board_layout._layout_hash, None)
-                if not contains(neighbour, self.fringe) and tmp1 is None:
-                    self.fringe.append(neighbour)
+                if not contains(neighbour, fr) and tmp1 is None:
+                    app(neighbour)
 
             self.update_max_fringe_size()
         return self.failure()
@@ -262,22 +266,32 @@ class DepthFirstSearch(SearchAlgorithm):
         SearchAlgorithm.__init__(self, [], dict())
 
     def search(self):
-        self.fringe.append(StateSpaceElement(self.startLayout, None, None))
+        fr = self.fringe
+        app = fr.append
+        app(StateSpaceElement(self.startLayout, None, None))
         self.update_max_fringe_size()
-
-        while len(self.fringe) > 0:
-            state = self.fringe.pop()
+        explored_counter = 0
+        while len(fr) > 0:
+            state = fr.pop()
 
             if state.board_layout_is_acceptable():
-                return self.Success(state)
+                return self.success(state)
 
             self.explored[state.board_layout._layout_hash] = state
+            explored_counter+=1
+            progress_log_granularity = 10000
+            should_log_progress = True
+            if should_log_progress and (explored_counter % progress_log_granularity) == 0:
+                log("explored: %d"%explored_counter, 10)
             self.max_search_depth = max(self.max_search_depth, len(self.get_path_to_goal(state)))
 
-            for neighbour in self.expand_node(state):
-                tmp1 = self.explored.get(neighbour.board_layout._layout_hash, None)
-                if not contains(neighbour, self.fringe) and tmp1 is None:
-                    self.fringe.append(neighbour)
+            child_nodes = self.expand_node(state)
+            if len(child_nodes) > 0:
+                child_nodes.reverse() # for putting onto the stack so dfs semantics are preserved
+                for neighbour in child_nodes:
+                    tmp1 = self.explored.get(neighbour.board_layout._layout_hash, None)
+                    if not contains(neighbour, fr) and tmp1 is None:
+                        app(neighbour)
 
             self.update_max_fringe_size()
         return self.failure()
@@ -297,7 +311,7 @@ class AStarSearch(SearchAlgorithm):
             state = self.fringe.pop()
 
             if state.board_layout_is_acceptable():
-                return self.Success(state)
+                return self.success(state)
 
             self.explored.add(state)
             self.max_search_depth = max(self.max_search_depth, len(self.get_path_to_goal(state)))
@@ -324,7 +338,7 @@ class IDAStarSearch(SearchAlgorithm):
             state = self.fringe.pop()
 
             if state.board_layout_is_acceptable():
-                return self.Success(state)
+                return self.success(state)
 
             self.explored.add(state)
             self.max_search_depth = max(self.max_search_depth, len(self.get_path_to_goal(state)))
@@ -364,3 +378,47 @@ if __name__ == "__main__":
 # max_search_depth: 7
 # running_time: 0.01337290
 # max_ram_usage: 7920.00000000
+
+
+class DfsTest(unittest.TestCase):
+    def setUp(self):
+        output_to_console = True
+        log_level = 3
+
+    def test0_7_step_solution(self):
+        startingBoardLayout = BoardLayout("1,2,5,0,4,8,3,6,7")
+        (searcher, finalState) = dispatch_command("bfs", startingBoardLayout)
+        path = searcher.get_path_to_goal(finalState)
+        self.assertEqual(path, ['Down', 'Right', 'Right', 'Up', 'Up', 'Left', 'Left'])
+        self.assertEqual(searcher.max_fringe_size, 103)
+        self.assertEqual(len(searcher.fringe), 102)
+        self.assertEqual(len(searcher.explored), 134)
+
+    def test0_simplest_dfs_case_works(self):
+        startingBoardLayout = BoardLayout("3,1,2,0,4,5,6,7,8")
+        (searcher, finalState) = dispatch_command("dfs", startingBoardLayout)
+        path = searcher.get_path_to_goal(finalState)
+        self.assertEqual(path, ["Up"])
+        self.assertEqual(searcher.max_fringe_size, 3)
+        self.assertEqual(len(searcher.fringe), 2)
+        self.assertEqual(len(searcher.explored), 1)
+
+    def test1_1_bfs(self):#bfs 1,2,5,3,4,0,6,7,8
+        startingBoardLayout = BoardLayout("1,2,5,3,4,0,6,7,8")
+        (searcher, finalState) = dispatch_command("bfs", startingBoardLayout)
+        path = searcher.get_path_to_goal(finalState)
+        self.assertEqual(path, ['Up', 'Left', 'Left'])
+        self.assertEqual(searcher.max_fringe_size, 12)
+        self.assertEqual(len(searcher.fringe), 11)
+        self.assertEqual(len(searcher.explored), 10)
+
+    def test1_2_dfs(self):#dfs 1,2,5,3,4,0,6,7,8
+        startingBoardLayout = BoardLayout("1,2,5,3,4,0,6,7,8")
+        (searcher, finalState) = dispatch_command("dfs", startingBoardLayout)
+        path = searcher.get_path_to_goal(finalState)
+        self.assertEqual(path, ['Up', 'Left', 'Left'])
+        self.assertEqual(searcher.max_fringe_size, 42913)
+        self.assertEqual(len(searcher.fringe), 2)
+        self.assertEqual(len(searcher.explored), 181437)
+        self.assertEqual(searcher.max_search_depth, 66125)
+
