@@ -8,8 +8,9 @@ import unittest
 
 profile_the_code = False
 output_to_console = True
+progress_log_granularity = 10000
+should_log_progress = False
 log_level = 3
-
 
 def logit(method):
     def timed(*args, **kw):
@@ -279,10 +280,9 @@ class DepthFirstSearch(SearchAlgorithm):
 
             self.explored[state.board_layout._layout_hash] = state
             explored_counter+=1
-            progress_log_granularity = 10000
-            should_log_progress = True
+
             if should_log_progress and (explored_counter % progress_log_granularity) == 0:
-                log("explored: %d"%explored_counter, 10)
+                log("explored: %d"%explored_counter, 2)
             self.max_search_depth = max(self.max_search_depth, len(self.get_path_to_goal(state)))
 
             child_nodes = self.expand_node(state)
@@ -380,11 +380,7 @@ if __name__ == "__main__":
 # max_ram_usage: 7920.00000000
 
 
-class DfsTest(unittest.TestCase):
-    def setUp(self):
-        output_to_console = True
-        log_level = 3
-
+class SearchTests(unittest.TestCase):
     def test0_7_step_solution(self):
         startingBoardLayout = BoardLayout("1,2,5,0,4,8,3,6,7")
         (searcher, finalState) = dispatch_command("bfs", startingBoardLayout)
