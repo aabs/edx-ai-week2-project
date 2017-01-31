@@ -24,14 +24,14 @@
       <file leaf-file-name="driver.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/driver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+            <state relative-caret-position="398">
+              <caret line="323" column="51" lean-forward="true" selection-start-line="323" selection-start-column="51" selection-end-line="323" selection-end-column="51" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <element signature="e#263#544#0" expanded="false" />
-                <element signature="e#4950#5907#0" expanded="false" />
-                <element signature="e#10835#11813#0" expanded="false" />
-                <element signature="e#14103#14483#0" expanded="false" />
+                <element signature="e#262#543#0" expanded="false" />
+                <element signature="e#8785#9804#0" expanded="false" />
+                <element signature="e#12347#13325#0" expanded="false" />
+                <element signature="e#14476#14856#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -96,51 +96,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python tests.Unittest SearchTests.test1_2_dfs">
-    <configuration default="false" name="Unittests in SearchTests" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="edx-ai-week2-project" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/driver.py" />
-      <option name="CLASS_NAME" value="SearchTests" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_CLASS" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Unittest SearchTests.test1_2" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="edx-ai-week2-project" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/driver.py" />
-      <option name="CLASS_NAME" value="SearchTests" />
-      <option name="METHOD_NAME" value="test1_2" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager">
     <configuration default="false" name="Unittest SearchTests.test0_7_step_solution" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -198,6 +154,50 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/driver.py" />
       <option name="CLASS_NAME" value="SearchTests" />
       <option name="METHOD_NAME" value="test1_2_dfs" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittests in driver" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="edx-ai-week2-project" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/driver.py" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittest SearchTests.test1_1_bfs" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="edx-ai-week2-project" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/driver.py" />
+      <option name="CLASS_NAME" value="SearchTests" />
+      <option name="METHOD_NAME" value="test1_1_bfs" />
       <option name="FOLDER_NAME" value="" />
       <option name="TEST_TYPE" value="TEST_METHOD" />
       <option name="PATTERN" value="" />
@@ -415,19 +415,19 @@
     <list size="7">
       <item index="0" class="java.lang.String" itemvalue="Python.1.dfs" />
       <item index="1" class="java.lang.String" itemvalue="Python.1.bfs" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in SearchTests" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_2" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test0_7_step_solution" />
-      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_1" />
-      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_2_dfs" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test0_7_step_solution" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_1" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_2_dfs" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittests in driver" />
+      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_1_bfs" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_2_dfs" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_1" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_1_bfs" />
         <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test0_7_step_solution" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in SearchTests" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_2" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in driver" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_1" />
       </list>
     </recent_temporary>
   </component>
@@ -463,35 +463,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittest_DfsTest_test0_7_step_solution - 2017.01.31 at 05h 34m 39s.xml">
-      <configuration name="Unittest DfsTest.test0_7_step_solution" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 40m 46s.xml">
+      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_DfsTest_test0_7_step_solution - 2017.01.31 at 05h 37m 30s.xml">
-      <configuration name="Unittest DfsTest.test0_7_step_solution" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 42m 02s.xml">
+      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_DfsTest_test0_7_step_solution - 2017.01.31 at 05h 50m 42s.xml">
-      <configuration name="Unittest DfsTest.test0_7_step_solution" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 43m 25s.xml">
+      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_DfsTest_test1_1 - 2017.01.31 at 05h 37m 41s.xml">
-      <configuration name="Unittest DfsTest.test1_1" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 45m 33s.xml">
+      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_DfsTest_test1_1 - 2017.01.31 at 05h 37m 53s.xml">
-      <configuration name="Unittest DfsTest.test1_1" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 53m 48s.xml">
+      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_DfsTest_test1_1 - 2017.01.31 at 05h 39m 55s.xml">
-      <configuration name="Unittest DfsTest.test1_1" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 55m 15s.xml">
+      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_DfsTest_test1_1 - 2017.01.31 at 05h 51m 58s.xml">
-      <configuration name="Unittest DfsTest.test1_1" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 59m 10s.xml">
+      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_DfsTest_test1_1 - 2017.01.31 at 05h 52m 05s.xml">
-      <configuration name="Unittest DfsTest.test1_1" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 22h 01m 19s.xml">
+      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_DfsTest_test1_2_dfs - 2017.01.31 at 06h 12m 17s.xml">
-      <configuration name="Unittest DfsTest.test1_2_dfs" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_2_dfs - 2017.01.31 at 22h 03m 55s.xml">
+      <configuration name="Unittest SearchTests.test1_2_dfs" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_DfsTest - 2017.01.31 at 05h 37m 08s.xml">
-      <configuration name="Unittests in DfsTest" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_2_dfs - 2017.01.31 at 22h 06m 51s.xml">
+      <configuration name="Unittest SearchTests.test1_2_dfs" configurationId="tests" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -510,10 +510,11 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2103677" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32919955" sideWeight="0.5045208" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32919955" sideWeight="0.4978903" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32807216" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.32919955" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37655017" sideWeight="0.7263412" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24954791" sideWeight="0.4960541" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36527622" sideWeight="0.7263412" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15611814" sideWeight="0.4960541" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32919955" sideWeight="0.4954792" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24954791" sideWeight="0.5039459" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38218716" sideWeight="0.4978903" order="3" side_tool="false" content_ui="tabs" />
@@ -523,7 +524,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32919955" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32919955" sideWeight="0.4978903" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -555,10 +555,17 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/driver.py</url>
+          <line>271</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="21" />
+      <option name="time" value="30" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -569,10 +576,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#263#544#0" expanded="false" />
-            <element signature="e#4950#5907#0" expanded="false" />
-            <element signature="e#10835#11813#0" expanded="false" />
-            <element signature="e#14103#14483#0" expanded="false" />
+            <element signature="e#262#543#0" expanded="false" />
+            <element signature="e#8785#9804#0" expanded="false" />
+            <element signature="e#12347#13325#0" expanded="false" />
+            <element signature="e#14476#14856#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -591,10 +598,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#263#544#0" expanded="false" />
-            <element signature="e#4950#5907#0" expanded="false" />
-            <element signature="e#10835#11813#0" expanded="false" />
-            <element signature="e#14103#14483#0" expanded="false" />
+            <element signature="e#262#543#0" expanded="false" />
+            <element signature="e#8785#9804#0" expanded="false" />
+            <element signature="e#12347#13325#0" expanded="false" />
+            <element signature="e#14476#14856#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -612,10 +619,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#263#544#0" expanded="false" />
-            <element signature="e#4950#5907#0" expanded="false" />
-            <element signature="e#10835#11813#0" expanded="false" />
-            <element signature="e#14103#14483#0" expanded="false" />
+            <element signature="e#262#543#0" expanded="false" />
+            <element signature="e#8785#9804#0" expanded="false" />
+            <element signature="e#12347#13325#0" expanded="false" />
+            <element signature="e#14476#14856#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -674,14 +681,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/driver.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+        <state relative-caret-position="398">
+          <caret line="323" column="51" lean-forward="true" selection-start-line="323" selection-start-column="51" selection-end-line="323" selection-end-column="51" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#263#544#0" expanded="false" />
-            <element signature="e#4950#5907#0" expanded="false" />
-            <element signature="e#10835#11813#0" expanded="false" />
-            <element signature="e#14103#14483#0" expanded="false" />
+            <element signature="e#262#543#0" expanded="false" />
+            <element signature="e#8785#9804#0" expanded="false" />
+            <element signature="e#12347#13325#0" expanded="false" />
+            <element signature="e#14476#14856#0" expanded="false" />
           </folding>
         </state>
       </provider>
