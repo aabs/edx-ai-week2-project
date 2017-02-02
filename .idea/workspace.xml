@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="536e5b1a-a11e-448a-bb02-06d0c505123f" name="Default" comment="implemented DFS, plus ported work into pycharm">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver.py" afterPath="$PROJECT_DIR$/driver.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,15 +23,35 @@
       <file leaf-file-name="driver.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/driver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="398">
-              <caret line="323" column="51" lean-forward="true" selection-start-line="323" selection-start-column="51" selection-end-line="323" selection-end-column="51" />
+            <state relative-caret-position="143">
+              <caret line="377" column="22" lean-forward="true" selection-start-line="377" selection-start-column="22" selection-end-line="377" selection-end-column="22" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <element signature="e#262#543#0" expanded="false" />
-                <element signature="e#8785#9804#0" expanded="false" />
-                <element signature="e#12347#13325#0" expanded="false" />
-                <element signature="e#14476#14856#0" expanded="false" />
+                <element signature="e#313#594#0" expanded="false" />
+                <element signature="e#9785#10804#0" expanded="false" />
+                <element signature="e#14385#15363#0" expanded="false" />
+                <element signature="e#16508#16888#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="heapq.py" pinned="false" current-in-tab="false">
+        <entry file="file:///usr/local/Cellar/pypy3/5.5.0/libexec/lib-python/3/heapq.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="134" column="0" lean-forward="false" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="case.py" pinned="false" current-in-tab="false">
+        <entry file="file:///usr/local/Cellar/pypy3/5.5.0/libexec/lib-python/3/unittest/case.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="173">
+              <caret line="438" column="0" lean-forward="false" selection-start-line="438" selection-start-column="0" selection-end-line="438" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -96,51 +115,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager">
-    <configuration default="false" name="Unittest SearchTests.test0_7_step_solution" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="edx-ai-week2-project" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/driver.py" />
-      <option name="CLASS_NAME" value="SearchTests" />
-      <option name="METHOD_NAME" value="test0_7_step_solution" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Unittest SearchTests.test1_1" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="edx-ai-week2-project" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/driver.py" />
-      <option name="CLASS_NAME" value="SearchTests" />
-      <option name="METHOD_NAME" value="test1_1" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python tests.Unittest SearchTests.test1_3_ast">
     <configuration default="false" name="Unittest SearchTests.test1_2_dfs" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -185,7 +160,51 @@
       <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="Unittest SearchTests.test1_1_bfs" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="Unittests in ManhattanDistanceHeuristicScoringTests" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="edx-ai-week2-project" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/driver.py" />
+      <option name="CLASS_NAME" value="ManhattanDistanceHeuristicScoringTests" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_CLASS" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittest ManhattanDistanceHeuristicScoringTests.test_board_with_one_vertically_displaced_tile_should_have_distance_of_two" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="edx-ai-week2-project" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/driver.py" />
+      <option name="CLASS_NAME" value="ManhattanDistanceHeuristicScoringTests" />
+      <option name="METHOD_NAME" value="test_board_with_one_vertically_displaced_tile_should_have_distance_of_two" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittest SearchTests.test1_3_ast" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -197,7 +216,7 @@
       <module name="edx-ai-week2-project" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/driver.py" />
       <option name="CLASS_NAME" value="SearchTests" />
-      <option name="METHOD_NAME" value="test1_1_bfs" />
+      <option name="METHOD_NAME" value="test1_3_ast" />
       <option name="FOLDER_NAME" value="" />
       <option name="TEST_TYPE" value="TEST_METHOD" />
       <option name="PATTERN" value="" />
@@ -415,19 +434,19 @@
     <list size="7">
       <item index="0" class="java.lang.String" itemvalue="Python.1.dfs" />
       <item index="1" class="java.lang.String" itemvalue="Python.1.bfs" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test0_7_step_solution" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_1" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_2_dfs" />
-      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittests in driver" />
-      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_1_bfs" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_2_dfs" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in driver" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in ManhattanDistanceHeuristicScoringTests" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittest ManhattanDistanceHeuristicScoringTests.test_board_with_one_vertically_displaced_tile_should_have_distance_of_two" />
+      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_3_ast" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_2_dfs" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_1_bfs" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test0_7_step_solution" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_3_ast" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in ManhattanDistanceHeuristicScoringTests" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest ManhattanDistanceHeuristicScoringTests.test_board_with_one_vertically_displaced_tile_should_have_distance_of_two" />
         <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in driver" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_1" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest SearchTests.test1_2_dfs" />
       </list>
     </recent_temporary>
   </component>
@@ -463,35 +482,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 40m 46s.xml">
-      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_3_ast - 2017.02.03 at 09h 31m 42s.xml">
+      <configuration name="Unittest SearchTests.test1_3_ast" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 42m 02s.xml">
-      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_3_ast - 2017.02.03 at 09h 34m 12s.xml">
+      <configuration name="Unittest SearchTests.test1_3_ast" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 43m 25s.xml">
-      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_3_ast - 2017.02.03 at 09h 40m 19s.xml">
+      <configuration name="Unittest SearchTests.test1_3_ast" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 45m 33s.xml">
-      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_3_ast - 2017.02.03 at 09h 43m 58s.xml">
+      <configuration name="Unittest SearchTests.test1_3_ast" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 53m 48s.xml">
-      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_3_ast - 2017.02.03 at 09h 47m 03s.xml">
+      <configuration name="Unittest SearchTests.test1_3_ast" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 55m 15s.xml">
-      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_3_ast - 2017.02.03 at 09h 49m 52s.xml">
+      <configuration name="Unittest SearchTests.test1_3_ast" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 21h 59m 10s.xml">
-      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_3_ast - 2017.02.03 at 09h 54m 35s.xml">
+      <configuration name="Unittest SearchTests.test1_3_ast" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_SearchTests_test1_1_bfs - 2017.01.31 at 22h 01m 19s.xml">
-      <configuration name="Unittest SearchTests.test1_1_bfs" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_3_ast - 2017.02.03 at 09h 54m 48s.xml">
+      <configuration name="Unittest SearchTests.test1_3_ast" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_SearchTests_test1_2_dfs - 2017.01.31 at 22h 03m 55s.xml">
-      <configuration name="Unittest SearchTests.test1_2_dfs" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_3_ast - 2017.02.03 at 09h 55m 29s.xml">
+      <configuration name="Unittest SearchTests.test1_3_ast" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_SearchTests_test1_2_dfs - 2017.01.31 at 22h 06m 51s.xml">
-      <configuration name="Unittest SearchTests.test1_2_dfs" configurationId="tests" />
+    <history-entry file="Unittest_SearchTests_test1_3_ast - 2017.02.03 at 09h 56m 26s.xml">
+      <configuration name="Unittest SearchTests.test1_3_ast" configurationId="tests" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -504,7 +523,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1680" height="979" extended-state="6" />
+    <frame x="0" y="23" width="1680" height="979" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2103677" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -513,11 +532,11 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32919955" sideWeight="0.4978903" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32807216" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.32919955" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36527622" sideWeight="0.7263412" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36527622" sideWeight="0.7263412" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15611814" sideWeight="0.4960541" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32919955" sideWeight="0.4954792" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24954791" sideWeight="0.5039459" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38218716" sideWeight="0.4978903" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.53776777" sideWeight="0.4978903" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -558,14 +577,19 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/driver.py</url>
-          <line>271</line>
+          <line>305</line>
           <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/driver.py</url>
+          <line>223</line>
+          <option name="timeStamp" value="38" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="30" />
+      <option name="time" value="41" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -576,10 +600,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#262#543#0" expanded="false" />
-            <element signature="e#8785#9804#0" expanded="false" />
-            <element signature="e#12347#13325#0" expanded="false" />
-            <element signature="e#14476#14856#0" expanded="false" />
+            <element signature="e#313#594#0" expanded="false" />
+            <element signature="e#9785#10804#0" expanded="false" />
+            <element signature="e#14385#15363#0" expanded="false" />
+            <element signature="e#16508#16888#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -598,10 +622,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#262#543#0" expanded="false" />
-            <element signature="e#8785#9804#0" expanded="false" />
-            <element signature="e#12347#13325#0" expanded="false" />
-            <element signature="e#14476#14856#0" expanded="false" />
+            <element signature="e#313#594#0" expanded="false" />
+            <element signature="e#9785#10804#0" expanded="false" />
+            <element signature="e#14385#15363#0" expanded="false" />
+            <element signature="e#16508#16888#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -619,10 +643,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#262#543#0" expanded="false" />
-            <element signature="e#8785#9804#0" expanded="false" />
-            <element signature="e#12347#13325#0" expanded="false" />
-            <element signature="e#14476#14856#0" expanded="false" />
+            <element signature="e#313#594#0" expanded="false" />
+            <element signature="e#9785#10804#0" expanded="false" />
+            <element signature="e#14385#15363#0" expanded="false" />
+            <element signature="e#16508#16888#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -679,16 +703,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///usr/local/Cellar/pypy3/5.5.0/libexec/lib-python/3/unittest/case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="438" column="0" lean-forward="false" selection-start-line="438" selection-start-column="0" selection-end-line="438" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/Cellar/pypy3/5.5.0/libexec/lib-python/3/heapq.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="134" column="0" lean-forward="false" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/driver.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="398">
-          <caret line="323" column="51" lean-forward="true" selection-start-line="323" selection-start-column="51" selection-end-line="323" selection-end-column="51" />
+        <state relative-caret-position="143">
+          <caret line="377" column="22" lean-forward="true" selection-start-line="377" selection-start-column="22" selection-end-line="377" selection-end-column="22" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#262#543#0" expanded="false" />
-            <element signature="e#8785#9804#0" expanded="false" />
-            <element signature="e#12347#13325#0" expanded="false" />
-            <element signature="e#14476#14856#0" expanded="false" />
+            <element signature="e#313#594#0" expanded="false" />
+            <element signature="e#9785#10804#0" expanded="false" />
+            <element signature="e#14385#15363#0" expanded="false" />
+            <element signature="e#16508#16888#0" expanded="false" />
           </folding>
         </state>
       </provider>

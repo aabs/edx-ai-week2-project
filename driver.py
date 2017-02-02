@@ -5,12 +5,15 @@ import time
 import resource
 import cProfile
 import unittest
+import heapq
+from functools import total_ordering
 
 profile_the_code = False
 output_to_console = True
 progress_log_granularity = 10000
 should_log_progress = True
 log_level = 2
+
 
 def logit(method):
     def timed(*args, **kw):
@@ -22,6 +25,7 @@ def logit(method):
         return result
 
     return timed
+
 
 def log(msg, level=0):
     if level >= log_level:
@@ -49,6 +53,7 @@ def dispatch_command(command, board_layout):
         pr.print_stats(sort="tottime")
     return result
 
+
 def display_usage(command):
     """please invoke like this: python driver.py <method> <board>, where board is a comma separated list of digits from 0 to 8"""
     print("dont understand ", command)
@@ -60,6 +65,7 @@ def swap_list_elements(l, from_idx, to_idx):
     tmp = l[to_idx]
     l[to_idx] = 0
     l[from_idx] = tmp
+
 
 def parse_layout(layout_as_string):
     """convert a comma separated list of chars into a vector"""
@@ -83,6 +89,7 @@ def contains(target, seq1):
     # return False
 
 
+@total_ordering
 class BoardLayout():
     """a class representing an instance of a configuration of the board"""
 
@@ -133,7 +140,7 @@ class BoardLayout():
         newBoard = list(self.state)
         to_idx = from_idx = newBoard.index(0)  # find location of blank space
         if move == "Up":
-            to_idx= from_idx - self.boardWidth
+            to_idx = from_idx - self.boardWidth
         if move == "Down":
             to_idx = from_idx + self.boardWidth
         if move == "Left":
@@ -141,7 +148,7 @@ class BoardLayout():
         if move == "Right":
             to_idx = from_idx + 1
 
-        newBoard[from_idx],newBoard[to_idx] = newBoard[to_idx],newBoard[from_idx]
+        newBoard[from_idx], newBoard[to_idx] = newBoard[to_idx], newBoard[from_idx]
         # swap_list_elements(newBoard, from_idx, to_idx)
         result = BoardLayout(newBoard)
         return result
@@ -150,12 +157,29 @@ class BoardLayout():
         return self._layout_hash == 12345678
         # return all(self.state[i] <= self.state[i + 1] for i in range(len(self.state) - 1))
 
+    @property
+    def manhatten_distance_score(self):
+        """h(s) = sum_{i=1}^{n}(abs(x_a - x_g) + abs(y_a - y_g))"""
+        scores = []
+        for idx, val in enumerate(self.state):
+            scores.append(self.compute_manhattan(idx, val))
+        return sum(scores)
+
+    def compute_manhattan(self, ord, val):
+        x_actual = ord % self.boardWidth
+        y_actual = math.floor(ord/self.boardWidth)
+        x_goal = val % self.boardWidth
+        y_goal = math.floor(val/self.boardWidth)
+        return math.fabs(x_actual - x_goal)+math.fabs(y_actual - y_goal)
+
     def __hash__(self):
         return self._layout_hash
-
     def __eq__(self, other):
         return self._layout_hash == other._layout_hash
+    def __lt__(self, other):
+        return self._layout_hash < other._layout_hash
 
+@total_ordering
 class StateSpaceElement():
     def __init__(self, board_layout, parent_state_space_element, action):
         self.board_layout = board_layout
@@ -177,6 +201,12 @@ class StateSpaceElement():
             return self.index_key
         self.index_key = str(self.board_layout)
         return self.index_key
+
+    def __eq__(self, other):
+        return self.board_layout == other.board_layout
+    def __lt__(self, other):
+        return self.board_layout < other.board_layout
+
     @property
     def search_depth(self):
         layers = 1
@@ -185,9 +215,13 @@ class StateSpaceElement():
             layers += 1
             x = x.parent_layout
         return layers
+
     def __hash__(self):
         return self.board_layout.__hash__()
+
     def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            log("oh shit!", 4)
         return self.board_layout._layout_hash == other.board_layout._layout_hash
 
 class SearchAlgorithm():
@@ -223,7 +257,7 @@ class SearchAlgorithm():
         # place till the item is taken off of the fringe.
         # a value of None for the board layout means generate forward from the nearest progenitor layout that has an
         # explicit layout (which may well be the initial board layout)
-        #result = [StateSpaceElement(None, state, move) for move in board.availableMoves()]
+        # result = [StateSpaceElement(None, state, move) for move in board.availableMoves()]
         return result
 
     def failure(self):
@@ -247,7 +281,7 @@ class SearchAlgorithm():
     def update_max_fringe_size(self):
         self.max_fringe_size = max(self.max_fringe_size, len(self.fringe))
         if self.max_fringe_size % 500 == 0:
-            log(" %d"%self.max_fringe_size, 1)
+            log(" %d" % self.max_fringe_size, 1)
 
 
 class BreadthFirstSearch(SearchAlgorithm):
@@ -299,15 +333,15 @@ class DepthFirstSearch(SearchAlgorithm):
                 return self.success(state)
 
             self.explored[state.board_layout._layout_hash] = state
-            explored_counter+=1
+            explored_counter += 1
 
             if should_log_progress and (explored_counter % progress_log_granularity) == 0:
-                log("explored: %d"%explored_counter, 2)
+                log("explored: %d" % explored_counter, 2)
             self.max_search_depth = max(self.max_search_depth, state.search_depth)
 
             child_nodes = self.expand_node(state)
             if len(child_nodes) > 0:
-                child_nodes.reverse() # for putting onto the stack so dfs semantics are preserved
+                child_nodes.reverse()  # for putting onto the stack so dfs semantics are preserved
                 for neighbour in child_nodes:
                     tmp1 = self.explored.get(neighbour.board_layout._layout_hash, None)
                     if not contains(neighbour, fr) and tmp1 is None:
@@ -318,31 +352,49 @@ class DepthFirstSearch(SearchAlgorithm):
 
 
 class AStarSearch(SearchAlgorithm):
-    def __init__(self, startingBoardLayout):
-        """Initailises the runtime state. Uses a list (as a stack) for the fringe, and a set for the explored set."""
-        self.startLayout = startingBoardLayout
-        SearchAlgorithm.__init__(self, [], set([]))
+    def __init__(self, starting_board_layout):
+        """Initialises the runtime state. Uses a list (as a stack) for the fringe, and a set for the explored set."""
+        self.start_layout = starting_board_layout
+        SearchAlgorithm.__init__(self, [], dict())
 
     def search(self):
-        self.fringe.append(StateSpaceElement(self.startLayout, None, None))
+        fr = self.fringe
+        fringe_direct_access = dict()
+        def new_fr_item(node, fringe, fringe_da):
+            cost = node.search_depth + node.board_layout.manhatten_distance_score
+            heapq.heappush(fringe, (cost, node))
+            fringe_da[node.board_layout._layout_hash] = node
+        # heapq.heappush(fr, StateSpaceElement(self.start_layout, None, None))
+        root = StateSpaceElement(self.start_layout, None, None)
+        new_fr_item(root, fr, fringe_direct_access)
         self.update_max_fringe_size()
-
-        while len(self.fringe) > 0:
-            state = self.fringe.pop()
+        explored_counter = 0
+        while len(fr) > 0:
+            (cost, state) = heapq.heappop(fr)
 
             if state.board_layout_is_acceptable():
                 return self.success(state)
 
-            self.explored.add(state)
-            self.max_search_depth = max(self.max_search_depth, len(self.get_path_to_goal(state)))
+            self.explored[hash(state.board_layout)] = state
+            explored_counter += 1
 
-            for neighbour in self.expand_node(state):
-                if neighbour not in self.fringe and neighbour not in self.explored:
-                    self.fringe.append(neighbour)
+            if should_log_progress and (explored_counter % progress_log_granularity) == 0:
+                log("explored: %d" % explored_counter, 2)
+            self.max_search_depth = max(self.max_search_depth, state.search_depth)
+
+            child_nodes = self.expand_node(state)
+            if len(child_nodes) > 0:
+                for neighbour in child_nodes:
+                    tmp1 = self.explored.get(neighbour.board_layout._layout_hash, None)
+                    if tmp1 is None and neighbour.board_layout._layout_hash not in fringe_direct_access:
+                        new_fr_item(neighbour, fr, fringe_direct_access)
 
             self.update_max_fringe_size()
         return self.failure()
 
+    def add_node_to_the_fringe(self, node):
+        cost = node.search_depth + node.board_layout.manahattan_distance_score()
+        heapq.heappush(self.fringe, (cost, node))
 
 class IDAStarSearch(SearchAlgorithm):
     def __init__(self, startingBoardLayout):
@@ -381,6 +433,7 @@ start_time = time.time()
 if __name__ == "__main__":
     main()
 
+
 # a nice 7 step solution: bfs 1,2,5,0,4,8,3,6,7
 # path_to_goal: ['Down', 'Right', 'Right', 'Up', 'Up', 'Left', 'Left']
 # cost_of_path: 7
@@ -394,7 +447,7 @@ if __name__ == "__main__":
 
 
 class SearchTests(unittest.TestCase):
-    def test0_7_step_solution(self):
+    def test_dfs_7step(self):
         layout = parse_layout("1,2,5,0,4,8,3,6,7")
         startingBoardLayout = BoardLayout(layout)
         (searcher, finalState) = dispatch_command("bfs", startingBoardLayout)
@@ -413,7 +466,7 @@ class SearchTests(unittest.TestCase):
         self.assertEqual(len(searcher.fringe), 2)
         self.assertEqual(len(searcher.explored), 1)
 
-    def test1_1_bfs(self):#bfs 1,2,5,3,4,0,6,7,8
+    def test1_1_bfs(self):  # bfs 1,2,5,3,4,0,6,7,8
         layout = parse_layout("1,2,5,3,4,0,6,7,8")
         startingBoardLayout = BoardLayout(layout)
         (searcher, finalState) = dispatch_command("bfs", startingBoardLayout)
@@ -423,7 +476,17 @@ class SearchTests(unittest.TestCase):
         self.assertEqual(len(searcher.fringe), 11)
         self.assertEqual(len(searcher.explored), 10)
 
-    def test1_2_dfs(self):#dfs 1,2,5,3,4,0,6,7,8
+    def test1_3_ast(self):  # bfs 1,2,5,3,4,0,6,7,8
+        layout = parse_layout("1,2,5,3,4,0,6,7,8")
+        startingBoardLayout = BoardLayout(layout)
+        (searcher, finalState) = dispatch_command("ast", startingBoardLayout)
+        path = searcher.get_path_to_goal(finalState)
+        self.assertEqual(path, ['Up', 'Left', 'Left'])
+        # self.assertEqual(searcher.max_fringe_size, 12)
+        # self.assertEqual(len(searcher.fringe), 11)
+        # self.assertEqual(len(searcher.explored), 10)
+
+    def test1_2_dfs(self):  # dfs 1,2,5,3,4,0,6,7,8
         layout = parse_layout("1,2,5,3,4,0,6,7,8")
         startingBoardLayout = BoardLayout(layout)
         (searcher, finalState) = dispatch_command("dfs", startingBoardLayout)
@@ -434,3 +497,32 @@ class SearchTests(unittest.TestCase):
         self.assertEqual(len(searcher.explored), 181437)
         self.assertEqual(searcher.max_search_depth, 66125)
 
+class ManhattanDistanceHeuristicScoringTests(unittest.TestCase):
+    def test_solved_board_should_have_distance_of_zero(self):
+        layout = parse_layout("0,1,2,3,4,5,6,7,8")
+        sut = BoardLayout(layout)
+        self.assertEqual(0, sut.manhatten_distance_score(), "completed board should have score of zero")
+    def test_board_with_one_displaced_tile_should_have_distance_of_two(self):
+        layout = parse_layout("1,0,2,3,4,5,6,7,8")
+        sut = BoardLayout(layout)
+        self.assertEqual(2, sut.manhatten_distance_score())
+    def test_board_with_distance_of_four(self):
+        layout = parse_layout("1,2,0,3,4,5,6,7,8")
+        sut = BoardLayout(layout)
+        self.assertEqual(4, sut.manhatten_distance_score())
+    def test_board_with_one_vertically_displaced_tile_should_have_distance_of_two(self):
+        layout = parse_layout("3,1,2,0,4,5,6,7,8")
+        sut = BoardLayout(layout)
+        self.assertEqual(2, sut.manhatten_distance_score())
+    def test_board_with_one_vertically_displaced_tile_should_have_distance_of_two(self):
+        layout = parse_layout("3,1,2,6,4,5,0,7,8")
+        sut = BoardLayout(layout)
+        self.assertEqual(4, sut.manhatten_distance_score())
+    def test_board_with_corners_switched(self):
+        layout = parse_layout("8,1,2,3,4,5,6,7,0")
+        sut = BoardLayout(layout)
+        self.assertEqual(8, sut.manhatten_distance_score())
+    def test_board_with_corners_switched_2(self):
+        layout = parse_layout("0,1,6,3,4,5,2,7,8")
+        sut = BoardLayout(layout)
+        self.assertEqual(8, sut.manhatten_distance_score())
